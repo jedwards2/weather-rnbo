@@ -12,12 +12,22 @@ function App() {
     wind_speed: 0.98,
   })
 
+  const [formData, setFormData] = useState({
+    city: "",
+    state: "",
+  })
+
   const [location, setLocation] = useState({
+    city: "Cambridge",
+    state: "MA",
     lat: 44.34,
     lon: 10.99
   })
 
   const parseData = (data: any) => {
+    if (!data.main){
+      return;
+    }
     let tempData = data.main;
     let windData = data.wind;
 
@@ -30,11 +40,32 @@ function App() {
       wind_deg: windData.deg,
     }})
   }
+
+  const getLocation = async () => {
+    const request = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location.city},${location.state}&limit=1&appid=${process.env.REACT_APP_API_KEY}`)
+    const response = (await request.json())
+    setLocation({
+      city: response.city,
+      state: response.state,
+      lat: response.lat,
+      lon: response.lon,
+    })
+  }
+
   const fetchUsers = async () => {
       console.log("...fetching");
       const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${process.env.REACT_APP_API_KEY}`)
       const response = (await request.json())
       parseData(response);
+  }
+
+  const handleSubmit = (e: React.ChangeEvent) => {
+    e.preventDefault();
+    setFormData({
+      city: "",
+      state: ""
+    })
+    getLocation()
   }
 
   useEffect(() => {
@@ -48,7 +79,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header weatherData={weatherData}/>
+      <Header weatherData={weatherData} location={location} handleSubmit={handleSubmit} formData={formData} setFormData={setFormData}/>
       <Content />
     </div>
   );
