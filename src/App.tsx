@@ -20,6 +20,7 @@ function App() {
   const parseData = (data: any) => {
     let tempData = data.main;
     let windData = data.wind;
+
     setWeatherData((prevData) => {return {
       ...prevData,
       temp: tempData.temp,
@@ -29,16 +30,21 @@ function App() {
       wind_deg: windData.deg,
     }})
   }
-
-  useEffect(() => {
-    const fetchUsers = async () => {
+  const fetchUsers = async () => {
+      console.log("...fetching");
       const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${process.env.REACT_APP_API_KEY}`)
       const response = (await request.json())
       parseData(response);
-    }
+  }
 
-    fetchUsers()
+  useEffect(() => {
+    setInterval(fetchUsers, 60000);
   })
+
+  useEffect(() => {
+    fetchUsers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location])
 
   return (
     <div className="App">
