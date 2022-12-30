@@ -1,5 +1,7 @@
 const Header = ({weatherData, location, handleSubmit, formData, setFormData}: any) => {
+
   const handleChange = (e: any, value: String) => {
+    console.log(formData)
     if (value === "city"){
         setFormData((prevData: any) => {
           return {
@@ -19,18 +21,20 @@ const Header = ({weatherData, location, handleSubmit, formData, setFormData}: an
 
   return (
     <div id="header--div">
-      <h1>Weather-RNBO</h1>
-      <h3>{location.city}</h3>
-      <h3>{location.state}</h3>
+      <h3>Weather-RNBO</h3>
+      <h4>{location.city}</h4>
+      <h4>{location.state}</h4>
       <form onSubmit={(e) => handleSubmit(e)}>
-        <label>
-          Name:
-          <input type="text" name="cityname" value={formData.city} onChange={(e) => handleChange(e, "city")}/>
-        </label>
-        <label>
-          City:
-          <input type="text" name="citystate" value={formData.state} onChange={(e) => handleChange(e, "state")}/>
-        </label>
+        <div id="label--div">
+          <label>
+            City:
+            <input type="text" name="city" value={formData.city} onChange={(e) => handleChange(e, "city")}/>
+          </label>
+          <label>
+            State:
+            <input type="text" name="state" value={formData.state} onChange={(e) => handleChange(e, "state")}/>
+          </label>
+        </div>
 
         <button>Submit</button>
       </form>

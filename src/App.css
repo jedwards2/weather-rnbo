@@ -11,3 +11,12 @@ html, body, #root {
   align-items: center;
   gap: 1vh;
 }
+
+#label--div {
+  display: flex;
+}
+
+form {
+  display: flex;
+
+}

@@ -42,18 +42,17 @@ function App() {
   }
 
   const getLocation = async () => {
-    const request = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${location.city},${location.state}&limit=1&appid=${process.env.REACT_APP_API_KEY}`)
-    const response = (await request.json())
+    const request = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${formData.city},${formData.state}&limit=1&appid=${process.env.REACT_APP_API_KEY}`)
+    const response = await request.json();
     setLocation({
-      city: response.city,
-      state: response.state,
-      lat: response.lat,
-      lon: response.lon,
+      city: response[0].city,
+      state: response[0].state,
+      lat: response[0].lat,
+      lon: response[0].lon,
     })
   }
 
   const fetchUsers = async () => {
-      console.log("...fetching");
       const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${process.env.REACT_APP_API_KEY}`)
       const response = (await request.json())
       parseData(response);
@@ -61,11 +60,12 @@ function App() {
 
   const handleSubmit = (e: React.ChangeEvent) => {
     e.preventDefault();
+    getLocation();
     setFormData({
       city: "",
       state: ""
     })
-    getLocation()
+
   }
 
   useEffect(() => {
