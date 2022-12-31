@@ -1,4 +1,4 @@
-const CityForm = ({formData, setFormData, handleSubmit}: any) => {
+const CityForm = ({formData, setFormData, handleCitySubmit}: any) => {
   const handleChange = (e: any, value: String) => {
     if (value === "city"){
         setFormData((prevData: any) => {
@@ -19,7 +19,7 @@ const CityForm = ({formData, setFormData, handleSubmit}: any) => {
 
   return (
     <div>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      <form onSubmit={(e) => handleCitySubmit(e)}>
         <div id="label--div">
           <label>
             City:

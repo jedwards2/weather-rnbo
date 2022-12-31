@@ -15,6 +15,11 @@ function App() {
   const [formData, setFormData] = useState({
     city: "",
     state: "",
+  });
+
+  const [coordFormData, setCoordFormData] = useState({
+    lat: "",
+    lon: "",
   })
 
   const [location, setLocation] = useState({
@@ -53,13 +58,25 @@ function App() {
     })
   }
 
-  const fetchUsers = async () => {
+  const getCoordLocation = async () => {
+    console.log("...fetching coords");
+    const request = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${formData.city},${formData.state}&limit=1&appid=${process.env.REACT_APP_API_KEY}`)
+    const response = await request.json();
+    setLocation({
+      city: response[0].city,
+      state: response[0].state,
+      lat: response[0].lat,
+      lon: response[0].lon,
+    })
+  }
+
+  const fetchData = async () => {
       const request = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&appid=${process.env.REACT_APP_API_KEY}`)
       const response = (await request.json())
       parseData(response);
   }
 
-  const handleSubmit = (e: React.ChangeEvent) => {
+  const handleCitySubmit = (e: React.ChangeEvent) => {
     e.preventDefault();
     getLocation();
     setFormData({
@@ -69,18 +86,28 @@ function App() {
 
   }
 
+  const handleCoordSubmit = (e: React.ChangeEvent) => {
+    e.preventDefault();
+    getCoordLocation();
+    setCoordFormData({
+      lat: "",
+      lon: ""
+    })
+
+  }
+
   useEffect(() => {
-    setInterval(fetchUsers, 60000);
+    setInterval(fetchData, 60000);
   })
 
   useEffect(() => {
-    fetchUsers();
+    fetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
   return (
     <div className="App">
-      <Header weatherData={weatherData} location={location} handleSubmit={handleSubmit} formData={formData} setFormData={setFormData}/>
+      <Header weatherData={weatherData} location={location} handleSubmit={handleCitySubmit} formData={formData} setFormData={setFormData} coordFormData={coordFormData}/>
       <Content />
     </div>
   );

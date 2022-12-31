@@ -1,7 +1,7 @@
 import CityForm from "./CityForm"
 
 
-const Header = ({weatherData, location, handleSubmit, formData, setFormData}: any) => {
+const Header = ({weatherData, location, handleCitySubmit, formData, setFormData, coordFormData}: any) => {
 
 
   return (
@@ -9,7 +9,8 @@ const Header = ({weatherData, location, handleSubmit, formData, setFormData}: an
       <h3>Weather-RNBO</h3>
       <h4>{location.city}</h4>
       <h4>{location.state}</h4>
-      <CityForm handleSubmit={handleSubmit} formData={formData} setFormData={setFormData}/>
+      {/* <CoordForm handleSubmit={handleSubmit} coordFormData={formData} setCoordForm={setFormData}/> */}
+      <CityForm handleCitySubmit={handleCitySubmit} formData={formData} setFormData={setFormData}/>
       <p>Temp: {weatherData.temp}</p>
       <p>Humidity: {weatherData.humidity}</p>
       <p>Wind Degree: {weatherData.wind_deg}</p>
