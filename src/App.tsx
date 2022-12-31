@@ -42,6 +42,7 @@ function App() {
   }
 
   const getLocation = async () => {
+    console.log("...fetching");
     const request = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${formData.city},${formData.state}&limit=1&appid=${process.env.REACT_APP_API_KEY}`)
     const response = await request.json();
     setLocation({
